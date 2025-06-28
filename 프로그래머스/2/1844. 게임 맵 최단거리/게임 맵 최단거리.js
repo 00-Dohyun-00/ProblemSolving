@@ -1,48 +1,38 @@
 function solution(maps) {
-    var answer = 0;
-    // console.log(maps); 
+    var answer = -1;
+    let arrx = [0,0,-1,1];
+    let arry = [-1,1,0,0];
     
-    const x = [0,0,-1,1];
-    const y = [-1,1,0,0];
+    let q = [[0,0,1]];
     
-    const q = [[0,0,1]]; // 현재x, 현재y, 이동칸개수
-    
-    const visited = Array.from({length: maps.length}, ()=>
-        Array(maps[0].length).fill(false)
-    );
-    visited[0][0] = true;
-    
-    
+    let visited = Array.from({length: maps.length}, ()=>{
+        return Array(maps[0].length).fill(false);
+    })
+  
     while(q.length > 0){
-        const [nowX, nowY, num] = q.shift();
+        // 현재
+        const [x, y, num] = q.shift();
         
-        // 도착
-        if(nowX === maps.length-1 && nowY === maps[0].length -1){
+        // 탈출
+        if(x === maps.length - 1 && y === maps[0].length -1){
             answer = num;
-             console.log(answer)
             break;
         }
         
-        // 방향탐색
-        for(let i = 0; i<4; i++){
-            const nx = nowX + x[i];
-            const ny = nowY + y[i];
+        // 사방 확인
+        for(let i =0; i<4; i++){
+            const nx = x + arrx[i];
+            const ny = y + arry[i];
             
-            if(0 <= nx && nx < maps.length && 0 <= ny && ny < maps[0].length && !visited[nx][ny] && maps[nx][ny] === 1){
-                q.push([nx, ny, num+1]);
+            // 갈 수 있는 장소?
+            if(nx >= 0 && ny >= 0 && nx < maps.length && ny < maps[0].length && maps[nx][ny] === 1 && !visited[nx][ny]){
                 visited[nx][ny] = true;
+                
+                q.push([nx, ny, num+1]);
+                
             }
         }
-        
     }
-    // 도착불가
-    if(answer === 0){
-        answer = -1;
-    }
-    
-    
-    
-    
     
     return answer;
 }
