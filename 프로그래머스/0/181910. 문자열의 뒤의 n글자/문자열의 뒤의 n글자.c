@@ -21,7 +21,7 @@ char* solution(const char* my_string, int n) {
     start = end - n;
     
 
-    for(int j = start; j <= end; j++){
+    for(int j = start; j < end; j++){
         answer[index++] = my_string[j];
     }
     
