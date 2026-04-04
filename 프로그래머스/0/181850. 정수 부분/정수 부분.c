@@ -4,6 +4,6 @@
 
 int solution(double flo) {
     int answer = 0;
-    answer = flo / 1;
+    answer = (int)flo;
     return answer;
 }
