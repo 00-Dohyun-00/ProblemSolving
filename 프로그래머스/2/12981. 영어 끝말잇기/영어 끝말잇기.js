@@ -1,34 +1,54 @@
 function solution(n, words) {
     var answer = [];
-    
-    let seen = new Map(); // key : 겹치는 단어 확인, value: 이어지지 않는 단어 확인
-    
-    for(let i = 0; i <= words.length; i++){
-        // 겹치는 단어, 이어지지 않는 단어 없을 경우 [0,0] 반환
-        if(i === words.length){
-            answer = [0, 0];
-            break;
+    let wrongIdx = -1;
+
+    for(let i = 0; i<words.length ; i++){
+        // 한 글자인지
+        if(words[i].split('').length == 1){
+            wrongIdx = i;
         }
         
-        const key = words[i]; // 현재 단어
-        const value = key.split('')[key.length - 1]; // 현재 단어의 마지막 글자
-        
-        // 겹치는 단어, 이어지지 않는 단어 체크
-        if(seen.size !== 0){
-            const dup = seen.has(key); // 중복 단어 체크
-            const notCon = seen.get(words[i-1]) !== key.split('')[0] // 연결되지 않는 단어 체크
-            
-            if(dup || notCon){
-                const personNum = i % n + 1; // 번호
-                const turn = Math.floor(i / n) + 1; // 차례
-                answer = [personNum, turn]
-                break;
+        //1. 이어지는 단어인지
+        if(i !== 0){
+            let f = words[i].split('')[0];
+            let l = words[i-1].split('')[words[i-1].length - 1];
+            if(f !== l){
+                if((wrongIdx != -1 && i < wrongIdx) || wrongIdx == -1){
+                    wrongIdx = i;
+                }
             }
         }
         
-        // 해당사항 없는 경우 seen에 추가
-        seen.set(key, value);
+        //2. 같은 단어 쓴 적 있는지
+        for(let j = 0; j<i; j++){
+            if(words[i] == words[j]){
+                if((wrongIdx != -1 && i < wrongIdx) || wrongIdx == -1){
+                    wrongIdx = i;
+                }
+            }
+        }
     }
+    
+    // 없으면
+    if(wrongIdx == -1){
+        return [0,0];
+    }
+    
+    // 있으면
+    let a = 0;
+    let b = 1;
+    for(let i = 0; i<wrongIdx+1; i++){
+        if(a == n){
+            a = 1;
+            b++;
+        } else {
+            a++;
+        }
+    }
+    
+    answer = [a, b];
+    
+    
 
     return answer;
 }
