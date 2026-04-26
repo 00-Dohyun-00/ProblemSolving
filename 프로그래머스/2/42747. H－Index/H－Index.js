@@ -1,21 +1,21 @@
 function solution(citations) {
     var answer = 0;
-    // 0 이상 => [0101010]
-    // 1 이상 => [0101010]
-    for(let i = 0; i<=Math.max(...citations); i++){
-        let arr = [];
+    citations.sort((a,b) => a - b);
+    
+    for(let i = 0; i<citations[citations.length-1]; i++){
+        let cnt = 0;
         for(let j = 0; j<citations.length; j++){
-            if(citations[j] >= i){
-                arr.push(1);
-            } else {
-                arr.push(0);
+            if(i <= citations[j]){
+                cnt++;
             }
         }
-        // h번 이상 인용된 논문이 h편 이하일경우 break
-        if(i > arr.filter(v => v === 1).length){
-            answer = i - 1;
+        if(cnt >= i){
+            answer = i;
+        } else {
             break;
         }
+        
     }
+    
     return answer;
 }
