@@ -1,22 +1,27 @@
 function solution(clothes) {
     var answer = 1;
-    const hash = new Map();
+    let arr = [];
     
-    for(let i = 0; i<clothes.length; i++){
-        if(hash.has(clothes[i][1])){
-            let value = hash.get(clothes[i][1]);
-            value.push(clothes[i][0]);
-            hash.set(clothes[i][1], value);
-        } else {
-            hash.set(clothes[i][1], [clothes[i][0]]);
+    arr.push([clothes[0][1], 1]);
+    
+    for(let i =1; i<clothes.length; i++){
+        let has = false;
+        for(let j = 0; j<arr.length; j++){
+            if(clothes[i][1] == arr[j][0]){
+                arr[j][1]++;
+                has = true;
+            }
+        }
+        
+        if(!has){
+            arr.push([clothes[i][1], 1])
         }
     }
     
-    
-    for(const [key, value] of hash){
-       answer *= value.length + 1;
+    for(let i = 0; i<arr.length; i++){
+        answer *= (arr[i][1] + 1);
     }
     
-
-    return answer - 1;
+    answer -= 1;
+    return answer;
 }
